@@ -1,33 +1,17 @@
-/**
-Title of Project
-Author Name
+let balloon;
 
-This is a template. You must fill in the title,
-author, and this description to match your project!
-*/
-
-"use strict";
-
-
-/**
-Description of preload
-*/
 function preload() {
-
+    balloon = loadModel('assets/balloon.stl');
 }
 
-
-/**
-Description of setup
-*/
 function setup() {
-
+    createCanvas(1920, 1080, WEBGL);
 }
 
-
-/**
-Description of draw()
-*/
 function draw() {
-
+    background(200);
+    rotateX(frameCount * 0.01);
+    rotateY(frameCount * 0.01);
+    scale(90);
+    model(balloon);
 }
