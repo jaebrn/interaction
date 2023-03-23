@@ -6,6 +6,7 @@ let gravity = 1;
 
 let lives = 3;
 let heart;
+let heartW = 100;
 let score = 0;
 
 
@@ -26,6 +27,7 @@ function setup() {
 function draw() {
     background(0);
     printScore();
+    printLives();
     if (balloons.length < balloonCount) { // maintains proper # of balloons on screen
         balloons.push(new Balloon);
     }
@@ -60,7 +62,13 @@ function printScore() { // prints the current score on screen
     stroke(255);
     fill(255);
     textSize(64);
-    text(score, 50, 100);
+    text(score, width - 70, 100);
+}
+
+function printLives() {
+    for (i = 0; i < lives; i++) {
+        image(heart, heartW * i + 10, 0, heartW, heartW);
+    }
 }
 
 class Balloon {
