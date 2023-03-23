@@ -44,10 +44,11 @@ function draw() {
     printLives();
 }
 
-function mouseClicked() {
+//this is the temporary method of registering a hit while motion detection is not implemented
+function mouseClicked() { // registers when the balloon is being clicked on
     for (i = 0; i < balloonCount; i++) {
         if (dist(mouseX, mouseY, balloon[i].x, balloon[i].y) < balloon[i].diameter / 2) { // if clicking balloon
-            //balloon[i].hit();
+            balloon[i].vel.y = -5; // will alter this to make it directionally accurate once motion controls are added
             print('HIT');
         }
     }
