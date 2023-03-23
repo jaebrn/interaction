@@ -1,3 +1,6 @@
 # Template p5 project
+PLAYFUL INTERACTION 
+By Jenna Brown & Thomas Rompre 
+Made for CART263 in 2023
 
-This is the README file for the entire project. For more official projects you should write information here about the nature of the project, your name, any special explanations of how the project works, etc.
+

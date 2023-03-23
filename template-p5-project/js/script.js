@@ -1,112 +1,119 @@
-let balloonObj; //3D model
+// let balloonObj; //3D model
 
-let balloonCount = 3;
-let balloons = [];
-let gravity = 1;
+// let balloonCount = 3;
+// let balloons = [];
+// let gravity = 1;
 
-let lives = 3;
-let heart;
-let heartW = 100;
-let score = 0;
+// let lives = 3;
+// let heart;
+// let heartW = 100;
+// let score = 0;
 
 
 
-function preload() {
-    balloonObj = loadModel('assets/balloon.stl', true); // 3D model currently unused
-    heart = loadImage('assets/heart.png');
-}
+// function preload() {
+//     balloonObj = loadModel('assets/balloon.stl', true); // 3D model currently unused
+//     heart = loadImage('assets/heart.png');
+// }
 
-function setup() {
-    createCanvas(1920, 1080);
+// function setup() {
+//     createCanvas(1920, 1080);
+//     //world.gravity.y = 10;
 
-    for (i = 0; i < balloonCount; i++) {
-        balloons[i] = new Balloon;
-    }
-}
+//     // for (i = 0; i < balloonCount; i++) {
+//     //     balloons[i] = new Balloon;
+//     // }
 
-function draw() {
-    background(0);
-    printScore();
-    printLives();
-    if (balloons.length < balloonCount) { // maintains proper # of balloons on screen
-        balloons.push(new Balloon);
-    }
+//     var sprite = new Sprite();
+//     sprite.diameter = 100;
+// }
 
-    for (i = 0; i < balloons.length; i++) {
-        balloons[i].display();
-        balloons[i].move();
+// function draw() {
+//     background(0);
+//     printScore();
+//     printLives();
+//     // if (balloons.length < balloonCount) { // maintains proper # of balloons on screen
+//     //     balloons.push(new Balloon);
+//     // }
 
-        if (balloons[i].y > height + balloons[i].h) { // life lost & balloon spliced if off screen
-            lives--;
-            balloons.splice(i, 1);
-        }
+//     // for (i = 0; i < balloons.length; i++) {
+//     //     balloons[i].display();
+//     //     balloons[i].move();
 
-        //Attempt at collision detection between balloons
-        // for (j = 0; j < balloons.length; j++) {
-        //     if (dist(balloons[i].x, balloons[i].y, balloons[j].x, balloons[j].x) < balloons[i].w) {
-        //         balloons[i].x += 1;
-        //     }
-        // }
-    }
-}
+//     //     if (balloons[i].y > height + balloons[i].h) { // life lost & balloon spliced if off screen
+//     //         lives--;
+//     //         balloons.splice(i, 1);
+//     //     }
+//     // for (j = 0; j < balloons.length; j++) {
+//     //     var d = dist(balloons[i].x, balloons[i].y, balloons[j].x, balloons[j].y)
+//     //     if (d <= balloons[i].w && i != j) {
+//     //         print(i);
+//     //         balloons[i].x += 1;
+//     //         print("balloons overlapping");
+//     //     }
+//     // }
+//     //}
 
-function mouseClicked() {
-    for (i = 0; i < balloonCount; i++) {
-        if (dist(mouseX, mouseY, balloons[i].x, balloons[i].y) < balloons[i].h / 2) { // if clicking balloon
-            balloons[i].hit();
-        }
-    }
-}
+// }
 
-function printScore() { // prints the current score on screen 
-    stroke(255);
-    fill(255);
-    textSize(64);
-    text(score, width - 70, 100);
-}
+// function mouseClicked() {
+//     for (i = 0; i < balloonCount; i++) {
+//         if (dist(mouseX, mouseY, balloons[i].x, balloons[i].y) < balloons[i].h / 2) { // if clicking balloon
+//             balloons[i].hit();
+//         }
+//     }
+// }
 
-function printLives() {
-    for (i = 0; i < lives; i++) {
-        image(heart, heartW * i + 10, 0, heartW, heartW);
-    }
-}
+// function printScore() { // prints the current score on screen
+//     stroke(255);
+//     fill(255);
+//     textSize(64);
+//     text(score, width - 70, 100);
+// }
 
-class Balloon {
-    constructor() {
-        this.w = random(190, 210); // width variation
-        this.h = random(210, 230); // height variation
-        this.x = random(this.w, width - this.w); // x startign pos
-        this.y = random(0, -100); // y starting pos
-        this.rotation;
-        this.velocity = {
-            x: 0, y: 0
-        }
-        this.hitVector; // vector from mouse/hand to balloon
-    }
+// function printLives() {
+//     for (i = 0; i < lives; i++) {
+//         image(heart, heartW * i + 10, 0, heartW, heartW);
+//     }
+// }
 
-    display() {
-        noStroke();
-        fill(255, 0, 0);
-        ellipse(this.x, this.y, this.w, this.h);
-    }
+// class Balloon {
+//     constructor() {
+//         this.sprite = new Sprite;
+//         this.w = random(190, 210); // width variation
+//         this.h = random(210, 230); // height variation
+//         this.x = random(this.w, width - this.w); // x startign pos
+//         this.y = random(0, -100); // y starting pos
+//         this.rotation;
+//         this.velocity = {
+//             x: 0, y: 0
+//         }
+//         this.hitVector; // vector from mouse/hand to balloon
+//     }
 
-    move() {
-        this.y += gravity;
-    }
+//     display() {
+//         noStroke();
+//         fill(255, 0, 0);
+//         ellipse(this.x, this.y, this.w, this.h);
+//     }
 
-    hit() {
-        score++;
-        this.hitVector = new p5.Vector(this.x - mouseX, this.y - mouseY);
-        this.hitVector.setMag(1); // normalizing 
-        print("HIT");
-    }
-}
+//     move() {
+//         this.y += gravity;
+//     }
 
-function ballonModel() { // calling spawns 3d model
-    background(200);
-    rotateX(frameCount * 0.01);
-    rotateY(frameCount * 0.01);
-    scale(90);
-    normalMaterial();
-    model(balloon);
-}
+//     hit() {
+//         score++;
+//         this.hitVector = new p5.Vector(this.x - mouseX, this.y - mouseY);
+//         this.hitVector.setMag(1); // normalizing
+//         print("HIT");
+//     }
+// }
+
+// function balloonModel() { // calling spawns 3d model
+//     background(200);
+//     rotateX(frameCount * 0.01);
+//     rotateY(frameCount * 0.01);
+//     scale(90);
+//     normalMaterial();
+//     model(balloon);
+// }
