@@ -1,119 +1,92 @@
-// let balloonObj; //3D model
+let balloon = []; // array storing balloon sprites
+let balloonCount = 3;
+let diameter = 150; // balloon diameter
 
-// let balloonCount = 3;
-// let balloons = [];
-// let gravity = 1;
+let leftWall, rightWall; // sprite collision walls;
 
-// let lives = 3;
-// let heart;
-// let heartW = 100;
-// let score = 0;
+let lives = 3;
+let heart; // heart/life sprite
+let heartW = 100; // width of heart sprite
 
+let score = 0;
 
 
-// function preload() {
-//     balloonObj = loadModel('assets/balloon.stl', true); // 3D model currently unused
-//     heart = loadImage('assets/heart.png');
-// }
 
-// function setup() {
-//     createCanvas(1920, 1080);
-//     //world.gravity.y = 10;
+function preload() {
+    heart = loadImage('assets/heart.png');
+}
 
-//     // for (i = 0; i < balloonCount; i++) {
-//     //     balloons[i] = new Balloon;
-//     // }
+function setup() {
+    createCanvas(windowWidth, windowHeight);
+    background(100);
 
-//     var sprite = new Sprite();
-//     sprite.diameter = 100;
-// }
+    world.gravity.y = 1;
 
-// function draw() {
-//     background(0);
-//     printScore();
-//     printLives();
-//     // if (balloons.length < balloonCount) { // maintains proper # of balloons on screen
-//     //     balloons.push(new Balloon);
-//     // }
+    for (i = 0; i < balloonCount; i++) { // initial array population & balloon spawning
+        balloon[i] = new Sprite();
+        balloon[i].diameter = 150;
+        balloon[i].y = random(-balloon[i].diameter / 2, -balloon[i].diameter);
+        balloon[i].x = random(balloon[i].diameter / 2, width - balloon[i].diameter / 2);
+    }
 
-//     // for (i = 0; i < balloons.length; i++) {
-//     //     balloons[i].display();
-//     //     balloons[i].move();
+    rightWall = new Sprite();
+    rightWall.x = width + 10;
+    rightWall.h = height;
+    rightWall.y = rightWall.h / 2;
+    rightWall.w = 10;
+    rightWall.collider = 'static';
 
-//     //     if (balloons[i].y > height + balloons[i].h) { // life lost & balloon spliced if off screen
-//     //         lives--;
-//     //         balloons.splice(i, 1);
-//     //     }
-//     // for (j = 0; j < balloons.length; j++) {
-//     //     var d = dist(balloons[i].x, balloons[i].y, balloons[j].x, balloons[j].y)
-//     //     if (d <= balloons[i].w && i != j) {
-//     //         print(i);
-//     //         balloons[i].x += 1;
-//     //         print("balloons overlapping");
-//     //     }
-//     // }
-//     //}
+    leftWall = new Sprite();
+    leftWall.x = -10;
+    leftWall.h = height;
+    leftWall.w = 10;
+    leftWall.collider = 'static';
 
-// }
+}
 
-// function mouseClicked() {
-//     for (i = 0; i < balloonCount; i++) {
-//         if (dist(mouseX, mouseY, balloons[i].x, balloons[i].y) < balloons[i].h / 2) { // if clicking balloon
-//             balloons[i].hit();
-//         }
-//     }
-// }
+function draw() {
+    background(100);
 
-// function printScore() { // prints the current score on screen
-//     stroke(255);
-//     fill(255);
-//     textSize(64);
-//     text(score, width - 70, 100);
-// }
+    for (i = 0; i < balloon.length; i++) { //manages active balloon sprite
+        if (balloon[i].y > height + balloon[i].diameter) { // sprites deleted if off the screen 
+            balloon.splice(i, 1);
+            lives--;
+        }
+    }
 
-// function printLives() {
-//     for (i = 0; i < lives; i++) {
-//         image(heart, heartW * i + 10, 0, heartW, heartW);
-//     }
-// }
+    if (balloon.length < balloonCount) { //respawns balloons if array isn't fully populated
+        respawn();
+    }
 
-// class Balloon {
-//     constructor() {
-//         this.sprite = new Sprite;
-//         this.w = random(190, 210); // width variation
-//         this.h = random(210, 230); // height variation
-//         this.x = random(this.w, width - this.w); // x startign pos
-//         this.y = random(0, -100); // y starting pos
-//         this.rotation;
-//         this.velocity = {
-//             x: 0, y: 0
-//         }
-//         this.hitVector; // vector from mouse/hand to balloon
-//     }
+    printScore();
+    printLives();
+}
 
-//     display() {
-//         noStroke();
-//         fill(255, 0, 0);
-//         ellipse(this.x, this.y, this.w, this.h);
-//     }
+//this is the temporary method of registering a hit while motion detection is not implemented
+function mouseClicked() { // registers when the balloon is being clicked on
+    for (i = 0; i < balloonCount; i++) {
+        if (dist(mouseX, mouseY, balloon[i].x, balloon[i].y) < balloon[i].diameter / 2) { // if clicking balloon
+            balloon[i].vel.y = -5; // will alter this to make it directionally accurate once motion controls are added
+            balloon[i].vel.x = random(-5, 5);
+            print('HIT');
+            score++;
+        }
+    }
+}
 
-//     move() {
-//         this.y += gravity;
-//     }
+function printScore() { // prints the current score on screen
+    stroke(255);
+    fill(255);
+    textSize(64);
+    text(score, width - 70, 100);
+}
 
-//     hit() {
-//         score++;
-//         this.hitVector = new p5.Vector(this.x - mouseX, this.y - mouseY);
-//         this.hitVector.setMag(1); // normalizing
-//         print("HIT");
-//     }
-// }
+function printLives() { // prints the current number of lives on screen 
+    for (i = 0; i < lives; i++) {
+        image(heart, heartW * i + 10, 0, heartW, heartW);
+    }
+}
 
-// function balloonModel() { // calling spawns 3d model
-//     background(200);
-//     rotateX(frameCount * 0.01);
-//     rotateY(frameCount * 0.01);
-//     scale(90);
-//     normalMaterial();
-//     model(balloon);
-// }
+function respawn() { // adds a new balloon sprite to the array
+    balloon.push(new Sprite(random(diameter / 2, width - diameter / 2), random(-diameter / 2, -diameter / 2), 150));
+}
