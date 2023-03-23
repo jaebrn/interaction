@@ -4,9 +4,15 @@ let balloonCount = 3;
 let balloons = [];
 let gravity = 1;
 
+let lives = 3;
+let heart;
+let score = 0;
+
+
 
 function preload() {
     balloonObj = loadModel('assets/balloon.stl', true); // 3D model currently unused
+    heart = loadImage('assets/heart.png');
 }
 
 function setup() {
@@ -19,6 +25,7 @@ function setup() {
 
 function draw() {
     background(0);
+    printScore();
     if (balloons.length < balloonCount) {
         balloons.push(new Balloon);
     }
@@ -27,6 +34,7 @@ function draw() {
         balloons[i].display();
         balloons[i].move();
         if (balloons[i].y > height + balloons[i].h) {
+            lives--;
             balloons.splice(i, 1);
         }
         // for (j = 0; j < balloons.length; j++) {
@@ -40,9 +48,17 @@ function draw() {
 function mouseClicked() {
     for (i = 0; i < balloonCount; i++) {
         if (dist(mouseX, mouseY, balloons[i].x, balloons[i].y) < balloons[i].h / 2) {
+            score++;
             balloons[i].hit();
         }
     }
+}
+
+function printScore() {
+    stroke(255);
+    fill(255);
+    textSize(64);
+    text(score, 50, 100);
 }
 
 class Balloon {
