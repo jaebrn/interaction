@@ -16,7 +16,7 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     background(100);
 
-    world.gravity.y = 2;
+    world.gravity.y = 1;
 
     for (i = 0; i < balloonCount; i++) { // initial array population & balloon spawning
         balloon[i] = new Sprite();
@@ -42,6 +42,15 @@ function draw() {
 
     printScore();
     printLives();
+}
+
+function mouseClicked() {
+    for (i = 0; i < balloonCount; i++) {
+        if (dist(mouseX, mouseY, balloon[i].x, balloon[i].y) < balloon[i].diameter / 2) { // if clicking balloon
+            //balloon[i].hit();
+            print('HIT');
+        }
+    }
 }
 
 function printScore() { // prints the current score on screen
