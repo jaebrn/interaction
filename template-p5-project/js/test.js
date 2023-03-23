@@ -69,6 +69,7 @@ function mouseClicked() { // registers when the balloon is being clicked on
             balloon[i].vel.y = -5; // will alter this to make it directionally accurate once motion controls are added
             balloon[i].vel.x = random(-5, 5);
             print('HIT');
+            score++;
         }
     }
 }
